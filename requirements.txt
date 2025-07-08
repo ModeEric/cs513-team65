@@ -1,0 +1,5 @@
+pandas
+duckdb
+ydata-profiling
+jupyterlab
+tabulate

@@ -1,0 +1,15 @@
+dish_pk,n,dish_id,menu_page_id,id,price,high_price,created_at,updated_at,xpos,ypos,price_num,name,sponsor,event,venue,place,physical_description,occasion,notes,call_number,keywords,language,date,location,location_type,currency,currency_symbol,status,page_count,dish_count
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,220797.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,395403.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,329183.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,1212.0,791.0,7425.0,1000.0,,2011-04-20 20:33:23 UTC,2011-04-20 20:33:23 UTC,0.162857,0.898667,1000.0,,,,,,,,,,,,,,,,,,,
+,,99634.0,34065.0,431197.0,810.0,,2011-07-04 15:05:19 UTC,2011-07-04 15:05:19 UTC,0.26,0.623943,810.0,,,,,,,,,,,,,,,,,,,
+,,132402.0,45365.0,477461.0,630.0,,2011-07-22 16:37:45 UTC,2011-07-22 16:38:38 UTC,0.22,0.879027,630.0,,,,,,,,,,,,,,,,,,,
+,,133877.0,45363.0,479829.0,590.0,,2011-07-24 00:18:51 UTC,2011-07-24 00:18:51 UTC,0.127143,0.282284,590.0,,,,,,,,,,,,,,,,,,,
+,,133895.0,45363.0,479848.0,540.0,,2011-07-24 00:25:45 UTC,2011-07-24 00:25:45 UTC,0.144286,0.84172,540.0,,,,,,,,,,,,,,,,,,,
+,,,,12898.0,,,,,,,,,PUTNAM HOUSE,LUNCHEON,COMMERCIAL,NEW YORK CITY,CARD; 4.5 X 7.25;,,PRICED MENU; TABLE D'HOTE DINNER; NOTE ABOUT PURITY OF WATER;,1900-2019,,,1900-02-18,Putnam House,,Dollars,$,complete,2.0,29.0
+,,,,14453.0,,,,,,,,,THE LOTUS CLUB,"DINNER TO MR. WILLIAM T. EVANS, BY SOME OF HIS FRIENDS TO COMMEMORATE HIS GIFT OF AMERICAN PAINTINGS TO THE NATION",SOC;,NEW YORK CITY,CARD; 4.5X6.5;,COMPLIMENTARY/TESTIMONIAL,WINES LISTED; MENU IN FRENCH;,1907-1087,,,1907-12-18,The Lotus Club,,,,complete,2.0,13.0
+,,,,16618.0,,,,,,,,,WALDORF-ASTORIA,DINNER,COMMERCIAL,NYC,BROADSIDE;ILLUS;5X8.5;,,ALL ITEMS PRICED INDIVDUALY;,1907-1129,,,1907-12-31,Waldorf Astoria,,Dollars,$,complete,2.0,119.0
+,,,,16813.0,,,,,,,,,HOTEL ST. REGIS,"DAILY MENU, DINNER",COMMERCIAL,NEW YORK CITY,CARD; 5X8;,,MENU IN BOTH FRENCH AND ENGLISH;,1906-1047,,,1906-12-31,Hotel St. Regis,,Dollars,$,complete,2.0,182.0
+,,,,20789.0,,,,,,,,,WALDORF-ASTORIA,LUNCHEON,COMMERCIAL,NYC,BROADSIDE;ILLUS;5X8.5;,,ALL ITEMS PRICED INDIVDUALY;,1907-1128,,,1907-12-31,Waldorf Astoria,,Dollars,$,complete,2.0,120.0
