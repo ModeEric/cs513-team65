@@ -1,2 +1,4 @@
 
 data/raw/*.tgz
+
+data/raw/menus/*.csv
