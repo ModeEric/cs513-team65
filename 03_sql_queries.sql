@@ -1,0 +1,189 @@
+SELECT 
+    'BEFORE' as status,
+    'Orphaned dish_ids' as issue_type,
+    COUNT(*) as count
+FROM MenuItem mi
+LEFT JOIN Dish d ON mi.dish_id = d.id
+WHERE d.id IS NULL;
+
+
+SELECT 
+    'BEFORE' as status,
+    'Orphaned menu_ids' as issue_type,
+    COUNT(*) as count
+FROM MenuPage mp
+LEFT JOIN Menu m ON mp.menu_id = m.id
+WHERE m.id IS NULL;
+
+SELECT 
+    'BEFORE' as status,
+    'Extreme prices' as issue_type,
+    COUNT(*) as count
+FROM MenuItem
+WHERE CAST(REGEXP_REPLACE(price, '[^0-9.-]', '', 'g') AS FLOAT) < 0 
+   OR CAST(REGEXP_REPLACE(price, '[^0-9.-]', '', 'g') AS FLOAT) > 500
+   OR price IS NULL;
+
+SELECT 
+    'BEFORE' as status,
+    (EXTRACT(YEAR FROM CAST(m.date AS DATE)) / 10) * 10 AS decade,
+    COUNT(*) as menu_items,
+    AVG(CAST(REGEXP_REPLACE(mi.price, '[^0-9.-]', '', 'g') AS FLOAT)) AS avg_price,
+    MIN(CAST(REGEXP_REPLACE(mi.price, '[^0-9.-]', '', 'g') AS FLOAT)) AS min_price,
+    MAX(CAST(REGEXP_REPLACE(mi.price, '[^0-9.-]', '', 'g') AS FLOAT)) AS max_price
+FROM Menu m
+JOIN MenuPage mp ON m.id = mp.menu_id
+JOIN MenuItem mi ON mp.id = mi.menu_page_id
+JOIN Dish d ON mi.dish_id = d.id
+WHERE LOWER(m.place) LIKE '%new york%'
+  AND d.name LIKE '%beef%'
+  AND m.date IS NOT NULL
+  AND CAST(REGEXP_REPLACE(mi.price, '[^0-9.-]', '', 'g') AS FLOAT) IS NOT NULL
+GROUP BY decade
+ORDER BY decade;
+
+
+SELECT 
+    'AFTER' as status,
+    'Orphaned dish_ids' as issue_type,
+    COUNT(*) as count
+FROM MenuItem_cleaned mi
+LEFT JOIN Dish_cleaned d ON mi.dish_id = d.id
+WHERE d.id IS NULL;
+ 
+SELECT 
+    'AFTER' as status,
+    'Orphaned menu_ids' as issue_type,
+    COUNT(*) as count
+FROM MenuPage_cleaned mp
+LEFT JOIN Menu_cleaned m ON mp.menu_id = m.id
+WHERE m.id IS NULL;
+
+SELECT 
+    'AFTER' as status,
+    'Extreme prices' as issue_type,
+    COUNT(*) as count
+FROM MenuItem_cleaned
+WHERE price_cleaned < 0 OR price_cleaned > 500 OR price_cleaned IS NULL;
+
+
+SELECT 
+    'AFTER' as status,
+    decade,
+    COUNT(*) as menu_items,
+    ROUND(AVG(mi.price_cleaned), 2) AS avg_price,
+    ROUND(MIN(mi.price_cleaned), 2) AS min_price,
+    ROUND(MAX(mi.price_cleaned), 2) AS max_price,
+    ROUND(STDDEV(mi.price_cleaned), 2) AS price_stddev
+FROM Menu_cleaned m
+JOIN MenuPage_cleaned mp ON m.id = mp.menu_id
+JOIN MenuItem_cleaned mi ON mp.id = mi.menu_page_id
+JOIN Dish_cleaned d ON mi.dish_id = d.id
+WHERE (LOWER(m.place) LIKE '%new york%' OR LOWER(m.place) LIKE '%nyc%')
+  AND LOWER(d.name) LIKE '%beef%'
+  AND m.date IS NOT NULL
+  AND mi.price_cleaned IS NOT NULL
+  AND decade BETWEEN 1900 AND 1950
+GROUP BY decade
+ORDER BY decade;
+
+
+SELECT 
+    'Table Sizes' as analysis_type,
+    'Dish' as table_name,
+    (SELECT COUNT(*) FROM Dish) as before_count,
+    (SELECT COUNT(*) FROM Dish_cleaned) as after_count,
+    (SELECT COUNT(*) FROM Dish) - (SELECT COUNT(*) FROM Dish_cleaned) as removed_count
+UNION ALL
+SELECT 
+    'Table Sizes',
+    'MenuItem',
+    (SELECT COUNT(*) FROM MenuItem),
+    (SELECT COUNT(*) FROM MenuItem_cleaned),
+    (SELECT COUNT(*) FROM MenuItem) - (SELECT COUNT(*) FROM MenuItem_cleaned)
+UNION ALL
+SELECT 
+    'Table Sizes',
+    'MenuPage', 
+    (SELECT COUNT(*) FROM MenuPage),
+    (SELECT COUNT(*) FROM MenuPage_cleaned),
+    (SELECT COUNT(*) FROM MenuPage) - (SELECT COUNT(*) FROM MenuPage_cleaned)
+UNION ALL
+SELECT 
+    'Table Sizes',
+    'Menu',
+    (SELECT COUNT(*) FROM Menu),
+    (SELECT COUNT(*) FROM Menu_cleaned), 
+    (SELECT COUNT(*) FROM Menu) - (SELECT COUNT(*) FROM Menu_cleaned);
+
+SELECT 
+    'Data Quality Summary' as report_section,
+    metric_name,
+    before_value,
+    after_value,
+    improvement
+FROM (
+    SELECT 
+        'Orphaned dish_ids' as metric_name,
+        (SELECT COUNT(*) FROM MenuItem mi LEFT JOIN Dish d ON mi.dish_id = d.id WHERE d.id IS NULL) as before_value,
+        (SELECT COUNT(*) FROM MenuItem_cleaned mi LEFT JOIN Dish_cleaned d ON mi.dish_id = d.id WHERE d.id IS NULL) as after_value,
+        (SELECT COUNT(*) FROM MenuItem mi LEFT JOIN Dish d ON mi.dish_id = d.id WHERE d.id IS NULL) - 
+        (SELECT COUNT(*) FROM MenuItem_cleaned mi LEFT JOIN Dish_cleaned d ON mi.dish_id = d.id WHERE d.id IS NULL) as improvement
+    
+    UNION ALL
+    
+    SELECT 
+        'Orphaned menu_ids',
+        (SELECT COUNT(*) FROM MenuPage mp LEFT JOIN Menu m ON mp.menu_id = m.id WHERE m.id IS NULL),
+        (SELECT COUNT(*) FROM MenuPage_cleaned mp LEFT JOIN Menu_cleaned m ON mp.menu_id = m.id WHERE m.id IS NULL),
+        (SELECT COUNT(*) FROM MenuPage mp LEFT JOIN Menu m ON mp.menu_id = m.id WHERE m.id IS NULL) -
+        (SELECT COUNT(*) FROM MenuPage_cleaned mp LEFT JOIN Menu_cleaned m ON mp.menu_id = m.id WHERE m.id IS NULL)
+        
+    UNION ALL
+    
+    SELECT 
+        'Valid price range',
+        (SELECT COUNT(*) FROM MenuItem WHERE price IS NOT NULL),
+        (SELECT COUNT(*) FROM MenuItem_cleaned WHERE price_cleaned BETWEEN 0 AND 500),
+        (SELECT COUNT(*) FROM MenuItem_cleaned WHERE price_cleaned BETWEEN 0 AND 500) -
+        (SELECT COUNT(*) FROM MenuItem WHERE price IS NOT NULL AND CAST(REGEXP_REPLACE(price, '[^0-9.-]', '', 'g') AS FLOAT) BETWEEN 0 AND 500)
+) quality_metrics;
+
+
+WITH raw_analysis AS (
+    SELECT 
+        'BEFORE_CLEANING' as dataset,
+        COUNT(*) as total_items,
+        AVG(CAST(REGEXP_REPLACE(mi.price, '[^0-9.-]', '', 'g') AS FLOAT)) as avg_price,
+        MIN(CAST(REGEXP_REPLACE(mi.price, '[^0-9.-]', '', 'g') AS FLOAT)) as min_price,
+        MAX(CAST(REGEXP_REPLACE(mi.price, '[^0-9.-]', '', 'g') AS FLOAT)) as max_price
+    FROM Menu m
+    JOIN MenuPage mp ON m.id = mp.menu_id
+    JOIN MenuItem mi ON mp.id = mi.menu_page_id  
+    JOIN Dish d ON mi.dish_id = d.id
+    WHERE LOWER(m.place) LIKE '%new york%'
+      AND LOWER(d.name) LIKE '%beef%'
+      AND m.date BETWEEN '1900-01-01' AND '1950-12-31'
+      AND CAST(REGEXP_REPLACE(mi.price, '[^0-9.-]', '', 'g') AS FLOAT) IS NOT NULL
+),
+
+clean_analysis AS (
+    SELECT 
+        'AFTER_CLEANING' as dataset,
+        COUNT(*) as total_items,
+        AVG(mi.price_cleaned) as avg_price,
+        MIN(mi.price_cleaned) as min_price,
+        MAX(mi.price_cleaned) as max_price
+    FROM Menu_cleaned m
+    JOIN MenuPage_cleaned mp ON m.id = mp.menu_id
+    JOIN MenuItem_cleaned mi ON mp.id = mi.menu_page_id
+    JOIN Dish_cleaned d ON mi.dish_id = d.id
+    WHERE (LOWER(m.place) LIKE '%new york%' OR LOWER(m.place) LIKE '%nyc%')
+      AND LOWER(d.name) LIKE '%beef%'
+      AND m.date BETWEEN '1900-01-01' AND '1950-12-31'
+      AND mi.price_cleaned IS NOT NULL
+)
+
+SELECT * FROM raw_analysis
+UNION ALL  
+SELECT * FROM clean_analysis;
