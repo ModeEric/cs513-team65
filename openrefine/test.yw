@@ -1,0 +1,126 @@
+#@begin Linear_OR #@desc Linear OpenRefine Workflow
+#@param expression:value.toUppercase()
+#@param expression:value.trim()
+#@param newColumnName:city_state
+#@param col-name:city_state
+#@param expression:"value"
+#@param col-name:place
+#@in table0
+#@out table22
+#@begin core/column-addition0#@desc Create column city_state at index 6 based on column place using expression grel:value
+#@param col-name:place
+#@param newColumnName:"city_state"
+#@in table0
+#@out table1
+#@end core/column-addition0
+#@begin core/mass-edit0#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table1
+#@out table2
+#@end core/mass-edit0
+#@begin core/mass-edit1#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table2
+#@out table3
+#@end core/mass-edit1
+#@begin core/mass-edit2#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table3
+#@out table4
+#@end core/mass-edit2
+#@begin core/mass-edit3#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table4
+#@out table5
+#@end core/mass-edit3
+#@begin core/mass-edit4#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table5
+#@out table6
+#@end core/mass-edit4
+#@begin core/text-transform0#@desc Text transform on cells in column city_state using expression value.toUppercase()
+#@param col-name:city_state
+#@param expression:value.toUppercase()
+#@in table6
+#@out table7
+#@end core/text-transform0
+#@begin core/text-transform1#@desc Text transform on cells in column city_state using expression value.trim()
+#@param col-name:city_state
+#@param expression:value.trim()
+#@in table7
+#@out table8
+#@end core/text-transform1
+#@begin core/mass-edit5#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table8
+#@out table9
+#@end core/mass-edit5
+#@begin core/mass-edit6#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table9
+#@out table10
+#@end core/mass-edit6
+#@begin core/mass-edit7#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table10
+#@out table11
+#@end core/mass-edit7
+#@begin core/mass-edit8#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table11
+#@out table12
+#@end core/mass-edit8
+#@begin core/mass-edit9#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table12
+#@out table13
+#@end core/mass-edit9
+#@begin core/mass-edit10#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table13
+#@out table14
+#@end core/mass-edit10
+#@begin core/mass-edit11#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table14
+#@out table15
+#@end core/mass-edit11
+#@begin core/mass-edit12#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table15
+#@out table16
+#@end core/mass-edit12
+#@begin core/mass-edit13#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table16
+#@out table17
+#@end core/mass-edit13
+#@begin core/mass-edit14#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table17
+#@out table18
+#@end core/mass-edit14
+#@begin core/mass-edit15#@desc Mass edit cells in column city_state
+#@param col-name:city_state
+#@in table18
+#@out table19
+#@end core/mass-edit15
+#@begin core/row-removal0#@desc Remove rows
+#@param col-name:city_state
+#@param expression:"value"
+#@in table19
+#@out table20
+#@end core/row-removal0
+#@begin core/row-removal1#@desc Remove rows
+#@param col-name:city_state
+#@param expression:"value"
+#@in table20
+#@out table21
+#@end core/row-removal1
+#@begin core/row-removal2#@desc Remove rows
+#@param col-name:city_state
+#@param expression:"value"
+#@in table21
+#@out table22
+#@end core/row-removal2
+#@end Linear_OR
