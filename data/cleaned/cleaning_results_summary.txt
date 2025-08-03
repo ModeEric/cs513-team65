@@ -1,0 +1,19 @@
+DATA CLEANING RESULTS SUMMARY
+==================================================
+
+Execution time: 2025-08-02 21:57:28.734030
+
+BEFORE/AFTER COUNTS:
+Dish:     431,095 → 431,095
+MenuItem: 1,335,255 → 838,088
+MenuPage: 66,937 → 58,477
+Menu:     17,562 → 16,971
+Total reduction: 27.4%
+
+KEY METRICS:
+• Duplicates removed: 0
+• Null critical columns removed: 446189
+• Price outliers removed: 2914
+• Orphaned records removed: 56524
+• Invalid dates removed: 591
+• Referential integrity violations remaining: 0
