@@ -1,0 +1,67 @@
+digraph Workflow {
+rankdir=TB
+fontname=Courier; fontsize=18; labelloc=t
+label=data_cleaning_workflow
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+profile_data_quality
+clean_data_with_pandas
+fix_locations_with_openrefine
+check_ic_violations_with_sql
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+Menu_final
+MenuPage_final
+MenuItem_final
+Dish_final
+Menu [shape=record rankdir=LR label="{<f0> Menu |<f1> file\:data/Menu.csv}"];
+MenuPage [shape=record rankdir=LR label="{<f0> MenuPage |<f1> file\:data/MenuPage.csv}"];
+MenuItem [shape=record rankdir=LR label="{<f0> MenuItem |<f1> file\:data/MenuItem.csv}"];
+Dish [shape=record rankdir=LR label="{<f0> Dish |<f1> file\:data/Dish.csv}"];
+"Menu,MenuPage,MenuItem,Dish"
+Menu_intermediate
+Menu_cleaned
+MenuPage_cleaned
+MenuItem_cleaned
+Dish_cleaned
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+profile_data_quality -> "Menu,MenuPage,MenuItem,Dish"
+Menu -> profile_data_quality
+MenuPage -> profile_data_quality
+MenuItem -> profile_data_quality
+Dish -> profile_data_quality
+clean_data_with_pandas -> MenuPage_cleaned
+clean_data_with_pandas -> MenuItem_cleaned
+clean_data_with_pandas -> Dish_cleaned
+clean_data_with_pandas -> Menu_intermediate
+"Menu,MenuPage,MenuItem,Dish" -> clean_data_with_pandas
+fix_locations_with_openrefine -> Menu_cleaned
+Menu_intermediate -> fix_locations_with_openrefine
+check_ic_violations_with_sql -> Menu_final
+check_ic_violations_with_sql -> MenuPage_final
+check_ic_violations_with_sql -> MenuItem_final
+check_ic_violations_with_sql -> Dish_final
+Menu_cleaned -> check_ic_violations_with_sql
+MenuPage_cleaned -> check_ic_violations_with_sql
+MenuItem_cleaned -> check_ic_violations_with_sql
+Dish_cleaned -> check_ic_violations_with_sql
+}}
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+Menu_input_port [label=""]
+MenuPage_input_port [label=""]
+MenuItem_input_port [label=""]
+Dish_input_port [label=""]
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+Menu_final_output_port [label=""]
+MenuPage_final_output_port [label=""]
+MenuItem_final_output_port [label=""]
+Dish_final_output_port [label=""]
+Menu_input_port -> Menu
+MenuPage_input_port -> MenuPage
+MenuItem_input_port -> MenuItem
+Dish_input_port -> Dish
+Menu_final -> Menu_final_output_port
+MenuPage_final -> MenuPage_final_output_port
+MenuItem_final -> MenuItem_final_output_port
+Dish_final -> Dish_final_output_port
+}

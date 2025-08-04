@@ -9,7 +9,7 @@ LEFT JOIN Dish d ON mi.dish_id = d.id
 WHERE d.id IS NULL;
 
 
-### Check ophaned Menu IDs before cleaning
+### Check orphaned Menu IDs before cleaning
 
 SELECT 
     'BEFORE' as status,
